@@ -46,34 +46,30 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
   
   // Memoize functions to prevent recreation on every render
-  const signUp = useCallback(async (email: string, password: string, username: string): Promise<void> => {
+  const signUp = async (email: string, password: string, username: string): Promise<void> => {
     try {
+      // Sign up with metadata
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            username: username, // This will be used by the trigger
+          },
+        },
       });
       
       if (error) throw error;
-      
-      // Create profile after successful signup
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({ 
-            id: data.user.id, 
-            email, 
-            username 
-          });
-        
-        if (profileError) throw profileError;
-      }
+
+      // Profile is automatically created by the database trigger
+      console.log('User created successfully:', data.user?.id);
     } catch (error) {
       console.error('Sign up error:', error);
       throw error;
     }
-  }, []);
+  };
   
-  const signIn = useCallback(async (email: string, password: string): Promise<void> => {
+  const signIn = async (email: string, password: string): Promise<void> => {
     try {
       const { error } = await supabase.auth.signInWithPassword({ 
         email, 
@@ -85,9 +81,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error('Sign in error:', error);
       throw error;
     }
-  }, []);
+  };
   
-  const signOut = useCallback(async (): Promise<void> => {
+  const signOut = async (): Promise<void> => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) throw error;
@@ -95,7 +91,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       console.error('Sign out error:', error);
       throw error;
     }
-  }, []);
+  };
   
   // Memoize the context value
   const value = useMemo(() => ({
