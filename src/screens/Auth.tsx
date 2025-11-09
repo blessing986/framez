@@ -11,6 +11,7 @@ import {
   ScrollView,
   Animated,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -197,6 +198,20 @@ const AuthScreen = () => {
         await signIn(email, password);
       } else {
         await signUp(email, password, username);
+
+        Alert.alert(
+        'Success! 🎉',
+        'Account created successfully! You can now login.',
+        [
+          {
+            text: 'Login Now',
+            onPress: () => {
+              setIsLogin(true);
+              setPassword(''); 
+            },
+          },
+        ]
+      );
       }
     } catch (error: any) {
       setGeneralError(error.message || 'An error occurred. Please try again.');
