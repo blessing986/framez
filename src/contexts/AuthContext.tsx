@@ -85,11 +85,19 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   
   const signOut = async (): Promise<void> => {
     try {
+      // First clear local session state
+      setSession(null);
+      
+      // Then sign out from Supabase
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      
+      if (error) {
+        console.error('Sign out error:', error);
+        // Don't throw error, just log it since we already cleared local session
+      }
     } catch (error) {
       console.error('Sign out error:', error);
-      throw error;
+      // Don't throw, just clear session locally
     }
   };
   
