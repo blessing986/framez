@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,15 +9,10 @@ import { useAuth } from '../contexts/AuthContext';
 import AuthScreen from '../screens/Auth';
 import FeedScreen from '../screens/FeedScreen';
 import CreatePost from '../screens/CreatePost'
+import ProfileScreen from '../screens/ProfileScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-
-const PlaceholderScreen = ({ title }: { title: string }) => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text style={{ fontSize: 20, fontWeight: '600' }}>{title}</Text>
-  </View>
-);
 
 const renderTabBarIcon = (
   routeName: string,
@@ -71,9 +65,7 @@ const MainTabs = () => (
         options={{ title: 'New Post' }}
       />
 
-    <Tab.Screen name="Profile">
-      {() => <PlaceholderScreen title="Profile Screen" />}
-    </Tab.Screen>
+    <Tab.Screen name="Profile" component={ProfileScreen} />
   </Tab.Navigator>
 );
 
