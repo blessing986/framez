@@ -8,6 +8,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 // Screens
 import AuthScreen from '../screens/Auth';
+import FeedScreen from '../screens/FeedScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -61,9 +62,7 @@ const MainTabs = () => (
       },
     })}
   >
-    <Tab.Screen name="Feed">
-      {() => <PlaceholderScreen title="Feed Screen" />}
-    </Tab.Screen>
+    <Tab.Screen name="Feed" component={FeedScreen} />
 
     <Tab.Screen name="Create" options={{ title: 'New Post' }}>
       {() => <PlaceholderScreen title="Create Post Screen" />}
